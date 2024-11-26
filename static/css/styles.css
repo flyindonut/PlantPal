@@ -22,3 +22,25 @@ footer p a {
     text-decoration: none;
     margin: 0 0.5em;
 }
+
+.home-background {
+    background-image: url('../images/home.png'); /* Adjust path based on the structure */
+    background-size: cover; /* Ensures the image covers the entire container */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents tiling */
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
+}
+
+.text-container {
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+    padding: 20px; /* Add space around the text */
+    border-radius: 10px; /* Optional: Rounded corners */
+    text-align: center; /* Center align text inside the container */
+    max-width: 80%; /* Limit width of the rectangle */
+    margin: auto; /* Center horizontally */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Optional: Add a shadow for effect */
+}

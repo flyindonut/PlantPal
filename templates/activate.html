@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activate</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="PlantPal Logo" style="height: 40px; width: auto; margin-right: 10px;">
+                PlantPal
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('historical_data') }}">Historical Data</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('live_data_page') }}">Live Data</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('contact') }}">Contact Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}">About</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main class="container mt-4">
+        <h1 class="text-center">Activate</h1>
+        <div class="row mt-5">
+            <!-- Activate Valve Section -->
+            <div class="col-md-6 text-center">
+                <h3>Activate Valve</h3>
+                <button class="btn btn-success mt-3" onclick="activateValve('on')">Turn On</button>
+                <button class="btn btn-danger mt-3" onclick="activateValve('off')">Turn Off</button>
+            </div>
+            <!-- Activate LED Section -->
+            <div class="col-md-6 text-center">
+                <h3>Activate LED</h3>
+                <button class="btn btn-success mt-3" onclick="activateLED('on')">Turn On</button>
+                <button class="btn btn-danger mt-3" onclick="activateLED('off')">Turn Off</button>
+            </div>
+        </div>
+    </main>
+    <footer class="bg-dark text-white text-center py-3 mt-auto">
+        <p class="mb-0">
+            <a href="{{ url_for('index') }}" class="text-white mx-2">&copy; 2024 PlantPal</a> |
+            <a href="{{ url_for('contact') }}" class="text-white mx-2">Contact Us</a> |
+            <a href="{{ url_for('about') }}" class="text-white mx-2">About</a>
+        </p>
+    </footer>
+    <script>
+        // Example functions for button actions
+        function activateValve(state) {
+            alert(`Valve ${state === 'on' ? 'activated' : 'deactivated'}`);
+        }
+        function activateLED(state) {
+            alert(`LED ${state === 'on' ? 'activated' : 'deactivated'}`);
+        }
+    </script>
+</body>
+</html>

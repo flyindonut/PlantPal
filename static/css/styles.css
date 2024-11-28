@@ -33,7 +33,11 @@ footer p a {
     flex-direction: column;
     justify-content: center; /* Center content vertically */
     align-items: center; /* Center content horizontally */
+    border-radius: 15px; /* Adds rounded corners */
+    border: 5px solid #ccc; /* Optional: Adds a visible border */
+    overflow: hidden; /* Ensures the background image doesn't spill over the rounded corners */
 }
+
 
 .text-container {
     background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */

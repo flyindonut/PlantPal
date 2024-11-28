@@ -95,6 +95,10 @@ def historical_data():
 def get_sensor_data():
     return jsonify(sensor_data)
 
+@app.route('/activate')
+def activate():
+    return render_template('activate.html')
+
 def read_historical_data():
     historical_data = []
     file_path = '../../Documents/PlantPal/static/historical_data.txt'

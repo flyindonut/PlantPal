@@ -1,69 +1,124 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Historical Data from MQTT</h1>
-<table>
-    <tr>
-        <td style="width: 50%"><canvas id="tempChart" width="400"></canvas></td>
-        <td style="width: 50%"><canvas id="humChart" width="400"></canvas></td>
-    </tr>
-</table>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Live Data Dashboard</h1>
+
+    <div class="row">
+        <!-- Temperature Chart -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header text-center bg-primary text-white">
+                    <h5>Temperature (°C)</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="tempChart" width="400" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Humidity Chart -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header text-center bg-success text-white">
+                    <h5>Humidity (%)</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="humChart" width="400" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Moisture Level Display -->
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h5>Moisture Level</h5>
+                </div>
+                <div class="card-body">
+                    <p id="moisture-level" class="font-weight-bold text-primary" style="font-size: 1.8em;">Fetching...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-    // Initialize the charts
-    var tempCtx = document.getElementById('tempChart').getContext('2d');
-    var humCtx = document.getElementById('humChart').getContext('2d');
-    var tempChart = new Chart(tempCtx, {
+    // Initialize the charts for temperature and humidity
+    const tempCtx = document.getElementById('tempChart').getContext('2d');
+    const humCtx = document.getElementById('humChart').getContext('2d');
+
+    const tempChart = new Chart(tempCtx, {
         type: 'line',
         data: {
-            labels: [],
+            labels: Array(15).fill(''),
             datasets: [{
                 label: 'Temperature (°C)',
                 data: [],
                 borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 1
+                borderWidth: 2,
+                fill: false,
             }]
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: true,
             scales: {
-                y: {
-                    beginAtZero: true
-                }
+                x: { display: false },
+                y: { beginAtZero: true }
             }
         }
     });
 
-    var humChart = new Chart(humCtx, {
+    const humChart = new Chart(humCtx, {
         type: 'line',
         data: {
-            labels: [],
+            labels: Array(15).fill(''),
             datasets: [{
                 label: 'Humidity (%)',
                 data: [],
                 borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
+                borderWidth: 2,
+                fill: false,
             }]
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: true,
             scales: {
-                y: {
-                    beginAtZero: true
-                }
+                x: { display: false },
+                y: { beginAtZero: true }
             }
         }
     });
 
-    // Fetch historical data from the backend
-    fetch('/historical-data')
-        .then(response => response.json())
-        .then(data => {
-            data.forEach(point => {
-                tempChart.data.labels.push(point.timestamp);
-                tempChart.data.datasets[0].data.push(point.value);
-                humChart.data.labels.push(point.timestamp);
-                humChart.data.datasets[0].data.push(point.value);
-            });
+    // Fetch live data and update charts
+    async function fetchLiveData() {
+        try {
+            const response = await fetch('/live-data');
+            const data = await response.json();
+
+            // Update temperature chart
+            tempChart.data.datasets[0].data = data.temperature;
             tempChart.update();
+
+            // Update humidity chart
+            humChart.data.datasets[0].data = data.humidity;
             humChart.update();
-        });
+
+            // Update moisture level text
+            document.getElementById('moisture-level').textContent = `Moisture Level: ${data.moisture || 'Unknown'}`;
+        } catch (error) {
+            console.error("Error fetching live data:", error);
+        }
+    }
+
+    // Refresh data every 5 seconds
+    setInterval(fetchLiveData, 5000);
+
+    // Initial fetch to populate data immediately
+    fetchLiveData();
 </script>
 {% endblock %}
